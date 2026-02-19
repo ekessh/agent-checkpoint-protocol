@@ -1,4 +1,4 @@
-# AgentGit — Agent Checkpoint Protocol for Regulated AI
+# Agent Checkpoint Protocol for Regulated AI
 
 **Reliability and Explainability Infrastructure for Mission-Critical AI Systems**
 
