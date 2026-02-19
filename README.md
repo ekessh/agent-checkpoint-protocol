@@ -1,12 +1,12 @@
-# AgentGit — Decision State Infrastructure for Regulated AI
+# AgentStateProtocol — Decision State Infrastructure for Regulated AI
 
-**An open-source Checkpointing & Recovery Protocol for AI Agents**
+**An open-source checkpointing and recovery protocol for AI agents**
 
 > Capture, replay, and audit every step of an AI agent's reasoning chain. When a model hits a failure, it recovers to the last valid state and continues — without starting over. When a decision is challenged, you can replay exactly how it was reached.
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-41%20passed-brightgreen.svg)]()
+[![Package](https://img.shields.io/badge/PyPI-agentstateprotocol-blue.svg)](https://pypi.org/project/agentstateprotocol/)
 
 ---
 
@@ -21,18 +21,18 @@ Modern AI agents make high-stakes decisions — loan approvals, claim denials, t
 
 This isn't a developer experience problem. It's a **reliability and governance gap** that blocks enterprise adoption of agentic AI.
 
-## The Solution
+## The Approach
 
-AgentGit is a **checkpointing and recovery substrate** for AI agents. Every reasoning step is saved as a versioned state snapshot. Failures trigger automatic recovery. Every decision path is replayable.
+AgentStateProtocol gives your agent a versioned reasoning timeline:
 
-| Git Concept | AgentGit Equivalent | What It Means |
+| Git Concept | Agent Equivalent | Why It Helps |
 |---|---|---|
-| `git commit` | `agent.checkpoint()` | Save the agent's current reasoning state |
-| `git reset` | `agent.rollback()` | Undo failed reasoning, restore last valid state |
-| `git branch` | `agent.branch()` | Explore alternative decision paths in parallel |
-| `git merge` | `agent.merge()` | Select and combine the best reasoning path |
-| `git log` | `agent.history()` | Full audit trail of every decision step |
-| `git diff` | `agent.diff()` | Compare what changed between two reasoning states |
+| `git commit` | `agent.checkpoint()` | Save state at important points |
+| `git reset` | `agent.rollback()` | Recover from bad or failed steps |
+| `git branch` | `agent.branch()` | Explore alternative strategies safely |
+| `git merge` | `agent.merge()` | Bring winning branch outcomes back |
+| `git log` | `agent.history()` | Inspect decision history |
+| `git diff` | `agent.diff()` | Compare state transitions |
 
 ---
 
@@ -44,7 +44,7 @@ Checkpointing is not a convenience feature. In the following domains, it is **re
 
 Banks, insurers, and healthcare organizations face a core compliance problem: when an AI decision is challenged, they cannot explain the reasoning path, only the outcome.
 
-AgentGit enables **Forensic Replay**:
+AgentStateProtocol enables **Forensic Replay**:
 
 - Roll back to any checkpoint in the decision chain
 - Replay the exact reasoning tree that produced the outcome
@@ -61,19 +61,19 @@ Example decisions subject to audit: loan rejections, insurance claim denials, fr
 
 Multi-agent pipelines fail mid-execution. One agent times out. A tool call crashes. Memory resets. Today, the entire workflow restarts from zero — losing all intermediate computation.
 
-AgentGit enables **Stateful Recovery**:
+AgentStateProtocol enables **Stateful Recovery**:
 
 ```python
 # Agent was processing step 14 of 20 when the API timed out.
-# Without AgentGit: restart from step 1.
-# With AgentGit: resume from step 13.
+# Without AgentStateProtocol: restart from step 1.
+# With AgentStateProtocol: resume from step 13.
 
 result, cp = agent.safe_execute(
     func=call_external_api,
     state=current_state,
     description="Fetch supplier data",
     max_retries=3,
-    fallback=use_cached_supplier_data
+    fallback=use_cached_supplier_data,
 )
 ```
 
@@ -85,12 +85,7 @@ High-value industries: supply chain automation, claims processing, legal documen
 
 Enterprises are afraid to test new prompts or tools in production because failures cascade unpredictably.
 
-AgentGit provides **Version Control for Decision Intelligence**:
-
-- Save the current reasoning path before any experiment
-- Branch to test a new prompt or tool strategy
-- Compare outcome trees across branches
-- Merge the winning path back into production
+AgentStateProtocol provides **Version Control for Decision Intelligence**:
 
 ```python
 # Baseline path
@@ -113,7 +108,7 @@ agent.merge("new-prompt-strategy", strategy="prefer_higher_confidence")
 
 In 30-step reasoning chains, a timeout at step 22 destroys the entire context. Restarting loses the accumulated understanding that makes the plan coherent.
 
-AgentGit enables **Long-Horizon Cognition**:
+AgentStateProtocol enables **Long-Horizon Cognition**:
 
 - Partial rollback to the last coherent state
 - Branch simulation of alternative strategies
@@ -127,7 +122,7 @@ Applicable domains: strategic planning agents, financial modeling, infrastructur
 
 Wrongful automated decisions — credit denials, benefit rejections, algorithmic penalties — need to be challengeable. Today they are not, because there is no replayable record.
 
-AgentGit creates a **challengeable reasoning record**:
+AgentStateProtocol creates a **challengeable reasoning record**:
 
 - Stores checkpoints that can be replayed under cross-examination
 - Enables lawyers and regulators to test alternative logical paths
@@ -139,26 +134,15 @@ AgentGit creates a **challengeable reasoning record**:
 
 Developers cannot see where their agents fail. Stack traces show exceptions, not the reasoning path that led to them.
 
-AgentGit provides **Reasoning Visibility**:
-
-```bash
-# Visualize the full decision tree
-agentgit tree
-
-# Find exactly where the logic broke
-agentgit inspect <checkpoint-id>
-
-# Compare the last two decision states
-agentgit diff HEAD~1 HEAD
-```
+AgentStateProtocol provides **Reasoning Visibility**:
 
 ```
-└── ✅ Task received [de3eec5f]
-    └── ✅ Plan created [3a7996fa]
-        ├── ❌ API call failed [372aabc7]   ← failure entered here
-        ├── ✅ Used cache instead [a4d4e95e]
-        └── ✅ Retry succeeded [330a3284]
-            └── ✅ Summary generated [67f8369a]
++-- ? Task accepted [de3eec5f]
+    +-- ? Plan generated [3a7996fa]
+        +-- ? API failed [372aabc7]   <- failure entered here
+        +-- ? Cache fallback [a4d4e95e]
+        +-- ? Retry succeeded [330a3284]
+            +-- ? Summary complete [67f8369a]
 ```
 
 ---
@@ -166,40 +150,36 @@ agentgit diff HEAD~1 HEAD
 ## Quick Start
 
 ```bash
-pip install agentgit
+pip install agentstateprotocol
 ```
 
 ```python
-from agentgit import AgentGit
+from agentstateprotocol import AgentStateProtocol
 
-agent = AgentGit("loan-decision-agent")
+agent = AgentStateProtocol("research-agent")
 
-# Step 1: Capture state at each reasoning step
 agent.checkpoint(
-    state={"applicant_id": "A-4821", "income_verified": True, "dti_ratio": 0.38},
-    metadata={"confidence": 0.91, "model": "gpt-4o"},
-    description="Income and DTI verification complete",
-    logic_step="verify_financials"
+    state={"task": "Find best coffee shops in NYC", "stage": "parse"},
+    metadata={"confidence": 0.92},
+    description="Parsed request",
+    logic_step="parse_input",
 )
 
-# Step 2: Continue reasoning
 agent.checkpoint(
-    state={"credit_score": 710, "risk_band": "medium", "flag": None},
+    state={"task": "Find best coffee shops in NYC", "stage": "search", "results": ["Devocion", "La Cabra"]},
     metadata={"confidence": 0.87},
-    description="Credit assessment complete",
-    logic_step="assess_credit"
+    description="Collected candidates",
+    logic_step="search",
 )
 
-# Step 3: API call to fraud service fails
-# Roll back to last valid state — no restart required
+# Recover if next step fails
 agent.rollback()
 
-# Or branch to try an alternative fraud detection approach
-agent.branch("fallback-fraud-check")
+# Try a different path
+agent.branch("reviews-first")
 agent.checkpoint(
-    state={"fraud_check": "rule_based_fallback", "score": 0.12},
-    description="Fallback fraud check applied",
-    logic_step="fraud_detection_fallback"
+    state={"task": "Find best coffee shops in NYC", "stage": "reviews"},
+    logic_step="review_aggregation",
 )
 ```
 
@@ -207,95 +187,92 @@ agent.checkpoint(
 
 ## Core Features
 
-### Checkpointing — Immutable State Snapshots
+### 1. Checkpointing
 
 ```python
 cp = agent.checkpoint(
-    state={"reasoning": "Applicant qualifies under Tier 2 criteria..."},
-    metadata={"confidence": 0.87, "tokens_used": 150, "model": "gpt-4o"},
-    description="Qualification decision",
-    logic_step="qualification_check"
+    state={"reasoning": "User likely prefers quiet places with Wi-Fi"},
+    metadata={"confidence": 0.88, "tokens_used": 132},
+    description="Preference inference",
+    logic_step="infer_preferences",
 )
-# Every checkpoint has a unique ID and content hash for integrity verification
-print(f"Checkpoint: {cp.id} | Hash: {cp.hash} | Time: {cp.human_time}")
+
+print(cp.id, cp.hash)
 ```
 
-### Rollback — Restore to Any Prior State
+### 2. Rollback
 
 ```python
 agent.rollback()                              # One step back
-agent.rollback(steps=3)                       # Three steps back
+agent.rollback(steps=3)                       # N steps back
 agent.rollback(to_checkpoint_id="abc123")     # Jump to specific checkpoint
 ```
 
-### Branching — Parallel Decision Paths
+### 3. Branching
 
 ```python
-agent.checkpoint(state={"approach": "conservative-underwriting"})
-
-agent.branch("aggressive-underwriting")
-agent.checkpoint(state={"approach": "higher-risk-tolerance"})
-
-# Compare outcomes, then merge the better branch
+agent.checkpoint(state={"strategy": "stepwise"})
+agent.branch("creative")
+agent.checkpoint(state={"strategy": "lateral"})
 agent.switch_branch("main")
-agent.merge("aggressive-underwriting", strategy="prefer_higher_confidence")
 ```
 
-### Safe Execution — Automatic Recovery
+### 4. Safe Execution with Recovery
 
 ```python
-def call_fraud_api(state):
-    return fraud_service.check(state["applicant_id"])
+def risky_api_call(state):
+    return call_external_api(state["query"])
 
-result, checkpoint = agent.safe_execute(
-    func=call_fraud_api,
-    state=current_state,
-    description="Fraud score lookup",
+result, cp = agent.safe_execute(
+    func=risky_api_call,
+    state={"query": "latest market headlines"},
+    description="fetch_headlines",
     max_retries=3,
-    fallback=rule_based_fraud_check
+    fallback=use_cached_data,
 )
 ```
 
-### Logic Tree — Full Decision Audit Trail
+### 5. Logic Tree Visualization
 
 ```python
 print(agent.visualize_tree())
-# Produces a replayable decision tree from first checkpoint to current state
 ```
 
-### Decorators — Zero-Code-Change Integration
+### 6. Decorator Integration
 
 ```python
-from agentgit.decorators import agentgit_step
+from agentstateprotocol.decorators import agentstateprotocol_step
 
-@agentgit_step("classify_intent")
-def classify(state):
-    # Existing code, unchanged. Automatically checkpointed.
-    return {"intent": model.classify(state["input"])}
+@agentstateprotocol_step("analyze_data")
+def analyze(state):
+    return {"analysis": process(state["data"])}
+
+result = analyze({"data": raw_data})
 ```
 
 ---
 
 ## Recovery Strategies
 
-| Strategy | When to Use | Behavior |
+| Strategy | Best For | Behavior |
 |---|---|---|
-| `RetryWithBackoff` | API timeouts, rate limits | Exponential backoff between retries |
-| `AlternativePathStrategy` | Logic dead-ends, tool failures | Switches to a registered alternative function |
-| `DegradeGracefully` | Resource constraints | Reduces output complexity to stay functional |
-| `CompositeStrategy` | Complex failure modes | Chains strategies — tries each in order |
+| `RetryWithBackoff` | Timeouts / transient errors | Exponential retry delays |
+| `AlternativePathStrategy` | Logical dead-ends | Shift to alternate path |
+| `DegradeGracefully` | Resource pressure | Return reduced-complexity output |
+| `CompositeStrategy` | Complex failure modes | Chain multiple strategies |
 
 ```python
-from agentgit.strategies import RetryWithBackoff, DegradeGracefully, CompositeStrategy
+from agentstateprotocol import AgentStateProtocol
+from agentstateprotocol.strategies import RetryWithBackoff, DegradeGracefully, CompositeStrategy
 
-agent = AgentGit(
+agent = AgentStateProtocol(
     "resilient-agent",
     recovery_strategies=[
         CompositeStrategy([
             RetryWithBackoff(base_delay=1.0, max_delay=30.0),
             DegradeGracefully(),
-        ])
-    ]
+        ]),
+    ],
 )
 ```
 
@@ -304,13 +281,13 @@ agent = AgentGit(
 ## Storage Backends
 
 ```python
-from agentgit.storage import FileSystemStorage, SQLiteStorage
+from agentstateprotocol.storage import FileSystemStorage, SQLiteStorage
 
-# File-based — human-readable JSON, ideal for development and debugging
-agent = AgentGit("my-agent", storage_backend=FileSystemStorage(".agentgit"))
+# File-based storage (easy to inspect)
+agent = AgentStateProtocol("my-agent", storage_backend=FileSystemStorage(".agentstateprotocol"))
 
-# SQLite — fast queries, filterable by branch, suitable for production
-agent = AgentGit("my-agent", storage_backend=SQLiteStorage("agent.db"))
+# SQLite storage (good for production querying)
+agent = AgentStateProtocol("my-agent", storage_backend=SQLiteStorage("agent.db"))
 ```
 
 | Backend | Best For | Persistence |
@@ -324,36 +301,37 @@ agent = AgentGit("my-agent", storage_backend=SQLiteStorage("agent.db"))
 ## CLI
 
 ```bash
-agentgit demo                     # Interactive walkthrough
-agentgit log                      # Full checkpoint history
-agentgit tree                     # Visualize reasoning tree
-agentgit branches                 # List all decision branches
-agentgit diff <id1> <id2>         # Compare two reasoning states
-agentgit inspect <id>             # Detailed checkpoint view
-agentgit metrics                  # Agent reliability statistics
+agentstateprotocol demo
+agentstateprotocol log
+agentstateprotocol tree
+agentstateprotocol branches
+agentstateprotocol diff abc123 def456
+agentstateprotocol inspect <id>
+agentstateprotocol metrics
 ```
 
 ---
 
 ## Framework Integration
 
-### LangChain
-```python
-from agentgit.decorators import AgentGitMiddleware
+### LangChain-style Wrapping
 
-middleware = AgentGitMiddleware("langchain-agent")
+```python
+from agentstateprotocol.decorators import AgentStateProtocolMiddleware
+
+middleware = AgentStateProtocolMiddleware("langchain-agent")
 wrapped_chain = middleware.wrap(my_chain.invoke, "process_query")
-result = wrapped_chain({"input": "Evaluate this loan application"})
+result = wrapped_chain({"input": "Hello"})
 ```
 
-### Any Python Agent
-```python
-from agentgit.decorators import checkpoint_context
+### Generic Context Manager
 
-with checkpoint_context(description="Document analysis") as ctx:
-    result = analyze_document(doc)
-    ctx.state = {"result": result, "page_count": len(doc.pages)}
-# Automatically rolls back on exception
+```python
+from agentstateprotocol.decorators import checkpoint_context
+
+with checkpoint_context(description="Data processing") as ctx:
+    result = process_data(data)
+    ctx.state = {"result": result}
 ```
 
 ---
@@ -361,31 +339,29 @@ with checkpoint_context(description="Document analysis") as ctx:
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                    Your AI Agent                     │
-├─────────────────────────────────────────────────────┤
-│     Decorators & Middleware  (agentgit.decorators)   │
-├─────────────────────────────────────────────────────┤
-│          AgentGit Core Engine  (agentgit.engine)     │
-│   ┌──────────┐ ┌────────┐ ┌──────────┐ ┌─────────┐  │
-│   │Checkpoint│ │ Branch │ │ Rollback │ │LogicTree│  │
-│   └──────────┘ └────────┘ └──────────┘ └─────────┘  │
-├─────────────────────────────────────────────────────┤
-│       Recovery Strategies  (agentgit.strategies)     │
-├─────────────────────────────────────────────────────┤
-│           Serializers  (agentgit.serializers)        │
-├─────────────────────────────────────────────────────┤
-│    Storage:  FileSystem  │  SQLite  │  In-Memory     │
-└─────────────────────────────────────────────────────┘
++-------------------------------------------------------------+
+|                        Your AI Agent                        |
++-------------------------------------------------------------+
+|  Decorators & Middleware (agentstateprotocol.decorators)    |
++-------------------------------------------------------------+
+|     Core Engine (agentstateprotocol.engine)                 |
+|   Checkpoint | Branch | Rollback | Logic Tree               |
++-------------------------------------------------------------+
+|  Recovery Strategies (agentstateprotocol.strategies)        |
++-------------------------------------------------------------+
+|  Serializers (agentstateprotocol.serializers)               |
++-------------------------------------------------------------+
+|  Storage: FileSystem | SQLite | Memory                      |
++-------------------------------------------------------------+
 ```
 
 ---
 
 ## Compliance Alignment
 
-AgentGit is designed with regulated AI deployment in mind:
+AgentStateProtocol is designed with regulated AI deployment in mind:
 
-| Requirement | How AgentGit Addresses It |
+| Requirement | How AgentStateProtocol Addresses It |
 |---|---|
 | **EU AI Act — Article 12** (Record-keeping) | Immutable checkpoint log with content hashes |
 | **EU AI Act — Article 13** (Transparency) | Full reasoning tree replay and visualization |
@@ -397,8 +373,8 @@ AgentGit is designed with regulated AI deployment in mind:
 
 ## Contributing
 
-Contributions welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, coding standards, and the PR checklist.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License — see [LICENSE](LICENSE).
