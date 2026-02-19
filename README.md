@@ -1,4 +1,4 @@
-# ?? AgentStateProtocol — Git for AI Thoughts
+# AgentStateProtocol â€” Git for AI Thoughts
 
 **An open-source checkpointing and recovery protocol for AI agents**
 
@@ -228,18 +228,18 @@ with checkpoint_context(description="Data processing") as ctx:
 
 ```
 +-------------------------------------------------------------+
-¦                        Your AI Agent                       ¦
-+-------------------------------------------------------------¦
-¦  Decorators & Middleware (agentstateprotocol.decorators)   ¦
-+-------------------------------------------------------------¦
-¦     Core Engine (agentstateprotocol.engine)                ¦
-¦   Checkpoint | Branch | Rollback | Logic Tree              ¦
-+-------------------------------------------------------------¦
-¦  Recovery Strategies (agentstateprotocol.strategies)       ¦
-+-------------------------------------------------------------¦
-¦  Serializers (agentstateprotocol.serializers)              ¦
-+-------------------------------------------------------------¦
-¦  Storage: FileSystem | SQLite | Memory                     ¦
+Â¦                        Your AI Agent                       Â¦
++-------------------------------------------------------------Â¦
+Â¦  Decorators & Middleware (agentstateprotocol.decorators)   Â¦
++-------------------------------------------------------------Â¦
+Â¦     Core Engine (agentstateprotocol.engine)                Â¦
+Â¦   Checkpoint | Branch | Rollback | Logic Tree              Â¦
++-------------------------------------------------------------Â¦
+Â¦  Recovery Strategies (agentstateprotocol.strategies)       Â¦
++-------------------------------------------------------------Â¦
+Â¦  Serializers (agentstateprotocol.serializers)              Â¦
++-------------------------------------------------------------Â¦
+Â¦  Storage: FileSystem | SQLite | Memory                     Â¦
 +-------------------------------------------------------------+
 ```
 
@@ -251,4 +251,4 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License â€” see [LICENSE](LICENSE).
