@@ -1,14 +1,14 @@
 """
-AgentGit CLI — Command-line interface for inspecting agent state.
+agentstateprotocol CLI — Command-line interface for inspecting agent state.
 
 Usage:
-    python -m agentgit log                    # View checkpoint history
-    python -m agentgit tree                   # Visualize logic tree
-    python -m agentgit branches               # List branches
-    python -m agentgit diff <id1> <id2>       # Compare checkpoints
-    python -m agentgit inspect <checkpoint>   # View checkpoint details
-    python -m agentgit metrics                # Show agent metrics
-    python -m agentgit demo                   # Run interactive demo
+    python -m agentstateprotocol log                    # View checkpoint history
+    python -m agentstateprotocol tree                   # Visualize logic tree
+    python -m agentstateprotocol branches               # List branches
+    python -m agentstateprotocol diff <id1> <id2>       # Compare checkpoints
+    python -m agentstateprotocol inspect <checkpoint>   # View checkpoint details
+    python -m agentstateprotocol metrics                # Show agent metrics
+    python -m agentstateprotocol demo                   # Run interactive demo
 """
 
 import argparse
@@ -17,15 +17,15 @@ import sys
 import time
 import random
 
-from .engine import AgentGit
+from .engine import AgentStateProtocol
 from .strategies import RetryWithBackoff, AlternativePathStrategy, DegradeGracefully
 from .storage import FileSystemStorage
 
 
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="agentgit",
-        description="🧠 AgentGit — Git for AI Thoughts",
+        prog="agentstateprotocol",
+        description="🧠 agentstateprotocol — Git for AI Thoughts",
     )
     
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
@@ -61,7 +61,7 @@ def create_parser() -> argparse.ArgumentParser:
 
 def run_demo():
     """
-    Interactive demonstration of AgentGit capabilities.
+    Interactive demonstration of AgentStateProtocol capabilities.
     
     Simulates an AI agent that:
     1. Receives a task
@@ -72,11 +72,11 @@ def run_demo():
     6. Merges the best result
     """
     print("\n" + "=" * 60)
-    print("🧠 AgentGit Demo — Git for AI Thoughts")
+    print("🧠 AgentStateProtocol Demo — Git for AI Thoughts")
     print("=" * 60)
     
     # Initialize
-    agent = AgentGit(
+    agent = AgentStateProtocol(
         "demo-agent",
         recovery_strategies=[
             RetryWithBackoff(base_delay=0.1, max_delay=1.0),
@@ -255,7 +255,7 @@ def run_demo():
             print(f"   ~ {key}: {str(diff['modified'][key]['before'])[:30]} → {str(diff['modified'][key]['after'])[:30]}")
     
     print("\n" + "=" * 60)
-    print("✨ Demo complete! AgentGit protected the agent through:")
+    print("✨ Demo complete! AgentStateProtocol protected the agent through:")
     print("   • 1 API failure (caught & recovered)")
     print("   • 1 rollback (restored clean state)")
     print("   • 1 branch (explored alternative path)")
@@ -280,10 +280,10 @@ def main():
         session = storage.load_session()
         
         if not session:
-            print("No AgentGit session found. Run 'agentgit demo' to create one.")
+            print("No agentstateprotocol session found. Run 'agentstateprotocol demo' to create one.")
             sys.exit(1)
         
-        agent = AgentGit.import_session(session)
+        agent = AgentStateProtocol.import_session(session)
         
         if args.command == "log":
             for entry in agent.history(branch_name=args.branch, limit=args.limit):
@@ -315,3 +315,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -1,5 +1,5 @@
 """
-Test Suite for AgentGit
+Test Suite for AgentStateProtocol
 ========================
 Comprehensive tests covering all core functionality.
 """
@@ -15,21 +15,21 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from agentgit.engine import AgentGit, Checkpoint, Branch, LogicTree, CheckpointStatus
-from agentgit.strategies import (
+from agentstateprotocol.engine import AgentStateProtocol, Checkpoint, Branch, LogicTree, CheckpointStatus
+from agentstateprotocol.strategies import (
     RetryWithBackoff, AlternativePathStrategy, 
     DegradeGracefully, CompositeStrategy,
 )
-from agentgit.serializers import JSONSerializer, PickleSerializer, CompressedSerializer
-from agentgit.storage import FileSystemStorage, SQLiteStorage, InMemoryStorage
-from agentgit.decorators import agentgit_step, get_agent, register_agent
+from agentstateprotocol.serializers import JSONSerializer, PickleSerializer, CompressedSerializer
+from agentstateprotocol.storage import FileSystemStorage, SQLiteStorage, InMemoryStorage
+from agentstateprotocol.decorators import agentstateprotocol_step, get_agent, register_agent
 
 
 # ── Fixtures ──
 
 @pytest.fixture
 def agent():
-    return AgentGit("test-agent")
+    return AgentStateProtocol("test-agent")
 
 
 @pytest.fixture
@@ -349,8 +349,8 @@ class TestSerializers:
 
 class TestFileSystemStorage:
     def test_save_and_load(self, tmp_dir):
-        storage = FileSystemStorage(base_path=f"{tmp_dir}/.agentgit")
-        agent = AgentGit("test", storage_backend=storage)
+        storage = FileSystemStorage(base_path=f"{tmp_dir}/.agentstateprotocol")
+        agent = AgentStateProtocol("test", storage_backend=storage)
         
         cp = agent.checkpoint(state={"saved": True})
         loaded = storage.load_checkpoint(cp.id)
@@ -358,8 +358,8 @@ class TestFileSystemStorage:
         assert loaded.state["saved"] is True
     
     def test_list_checkpoints(self, tmp_dir):
-        storage = FileSystemStorage(base_path=f"{tmp_dir}/.agentgit")
-        agent = AgentGit("test", storage_backend=storage)
+        storage = FileSystemStorage(base_path=f"{tmp_dir}/.agentstateprotocol")
+        agent = AgentStateProtocol("test", storage_backend=storage)
         
         agent.checkpoint(state={"v": 1})
         agent.checkpoint(state={"v": 2})
@@ -371,7 +371,7 @@ class TestFileSystemStorage:
 class TestSQLiteStorage:
     def test_save_and_load(self, tmp_dir):
         storage = SQLiteStorage(db_path=f"{tmp_dir}/test.db")
-        agent = AgentGit("test", storage_backend=storage)
+        agent = AgentStateProtocol("test", storage_backend=storage)
         
         cp = agent.checkpoint(state={"stored": True})
         loaded = storage.load_checkpoint(cp.id)
@@ -380,7 +380,7 @@ class TestSQLiteStorage:
     
     def test_query_by_branch(self, tmp_dir):
         storage = SQLiteStorage(db_path=f"{tmp_dir}/test.db")
-        agent = AgentGit("test", storage_backend=storage)
+        agent = AgentStateProtocol("test", storage_backend=storage)
         
         agent.checkpoint(state={"branch": "main"})
         agent.branch("feature")
@@ -433,7 +433,7 @@ class TestSessionPersistence:
         agent = agent_with_checkpoints
         
         exported = agent.export_session()
-        restored = AgentGit.import_session(exported)
+        restored = AgentStateProtocol.import_session(exported)
         
         assert restored.agent_name == agent.agent_name
         assert len(restored.history()) == len(agent.history())
@@ -442,10 +442,10 @@ class TestSessionPersistence:
 # ── Decorator Tests ──
 
 class TestDecorators:
-    def test_agentgit_step_decorator(self):
-        register_agent("test-dec", AgentGit("test-dec"))
+    def test_agentstateprotocol_step_decorator(self):
+        register_agent("test-dec", AgentStateProtocol("test-dec"))
         
-        @agentgit_step("my_step", agent_name="test-dec")
+        @agentstateprotocol_step("my_step", agent_name="test-dec")
         def my_func(state):
             return {"output": state.get("input", 0) + 1}
         
@@ -473,3 +473,5 @@ class TestMetrics:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "--tb=short"])
+
+

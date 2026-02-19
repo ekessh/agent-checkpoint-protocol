@@ -1,8 +1,8 @@
 """
-Core Engine for AgentGit — The Checkpointing & Recovery Protocol
+Core Engine for AgentStateProtocol — The Checkpointing & Recovery Protocol
 ================================================================
 
-This is the "brain" of AgentGit. In plain English:
+This is the "brain" of AgentStateProtocol. In plain English:
 
 - A **Checkpoint** is a snapshot of what an AI agent is "thinking" at a given moment.
   Like pressing Ctrl+S on the agent's brain.
@@ -13,7 +13,7 @@ This is the "brain" of AgentGit. In plain English:
 - A **LogicTree** tracks the full decision tree — every path the agent considered,
   took, or abandoned.
 
-- **AgentGit** ties it all together: save states, rollback on failure, branch to
+- **AgentStateProtocol** ties it all together: save states, rollback on failure, branch to
   try different approaches, and recover gracefully from errors.
 """
 
@@ -28,7 +28,7 @@ from typing import Any, Dict, List, Optional, Callable, Tuple
 from enum import Enum
 from datetime import datetime, timezone
 
-logger = logging.getLogger("agentgit")
+logger = logging.getLogger("agentstateprotocol")
 
 
 # ──────────────────────────────────────────────
@@ -198,10 +198,10 @@ class LogicTree:
 
 
 # ──────────────────────────────────────────────
-#  AgentGit — The Main Controller
+#  AgentStateProtocol — The Main Controller
 # ──────────────────────────────────────────────
 
-class AgentGit:
+class AgentStateProtocol:
     """
     Git for AI Thoughts — The main interface.
     
@@ -215,7 +215,7 @@ class AgentGit:
     6. **history()** — View the full reasoning timeline (like `git log`)
     
     Usage:
-        agent = AgentGit("my-reasoning-agent")
+        agent = AgentStateProtocol("my-reasoning-agent")
         
         # Save state at each step
         cp1 = agent.checkpoint(
@@ -269,7 +269,7 @@ class AgentGit:
             "time_saved_seconds": 0.0,
         }
         
-        logger.info(f"AgentGit initialized for agent: {agent_name}")
+        logger.info(f"AgentStateProtocol initialized for agent: {agent_name}")
     
     # ── Checkpoint Operations ──
     
@@ -582,7 +582,7 @@ class AgentGit:
         Execute a function with automatic checkpointing and recovery.
         
         This is the "safety net" — wrap any agent operation in this, and
-        AgentGit will automatically:
+        AgentStateProtocol will automatically:
         1. Save a checkpoint before execution
         2. Try the operation
         3. If it fails, roll back and optionally retry or use a fallback
@@ -810,7 +810,7 @@ class AgentGit:
         }
     
     @classmethod
-    def import_session(cls, data: Dict[str, Any]) -> "AgentGit":
+    def import_session(cls, data: Dict[str, Any]) -> "AgentStateProtocol":
         """Restore a session from exported data."""
         agent = cls(data["agent_name"])
         agent.created_at = data["created_at"]
@@ -846,8 +846,11 @@ class AgentGit:
     def __repr__(self) -> str:
         branch = self._branches[self._current_branch]
         return (
-            f"AgentGit('{self.agent_name}', "
+            f"AgentStateProtocol('{self.agent_name}', "
             f"branch='{self._current_branch}', "
             f"checkpoints={len(branch.checkpoints)}, "
             f"branches={len(self._branches)})"
         )
+
+
+

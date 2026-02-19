@@ -1,5 +1,5 @@
 """
-Serializers for AgentGit
+Serializers for agentstateprotocol
 =========================
 
 Serializers convert agent state (Python objects) into formats that can be
@@ -21,7 +21,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 from datetime import datetime
 
-logger = logging.getLogger("agentgit.serializers")
+logger = logging.getLogger("agentstateprotocol.serializers")
 
 
 class StateSerializer(ABC):

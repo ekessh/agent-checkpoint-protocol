@@ -1,5 +1,5 @@
 """
-Storage Backends for AgentGit
+Storage Backends for agentstateprotocol
 ==============================
 
 Storage backends handle WHERE and HOW agent checkpoints are persisted.
@@ -20,7 +20,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
-logger = logging.getLogger("agentgit.storage")
+logger = logging.getLogger("agentstateprotocol.storage")
 
 
 class StorageBackend(ABC):
@@ -64,7 +64,7 @@ class FileSystemStorage(StorageBackend):
     File-based storage — each checkpoint is a JSON file.
     
     Directory structure:
-        .agentgit/
+        .agentstateprotocol/
         ├── session.json          # Full session metadata
         ├── checkpoints/
         │   ├── abc123.json       # Individual checkpoint files
@@ -77,7 +77,7 @@ class FileSystemStorage(StorageBackend):
     Best for: Development, debugging (you can inspect files directly)
     """
     
-    def __init__(self, base_path: str = ".agentgit"):
+    def __init__(self, base_path: str = ".agentstateprotocol"):
         self.base_path = Path(base_path)
         self.checkpoints_dir = self.base_path / "checkpoints"
         self.branches_dir = self.base_path / "branches"
@@ -152,7 +152,7 @@ class SQLiteStorage(StorageBackend):
     Best for: Production, large numbers of checkpoints, complex queries
     """
     
-    def __init__(self, db_path: str = ".agentgit/agentgit.db"):
+    def __init__(self, db_path: str = ".agentstateprotocol/agentstateprotocol.db"):
         self.db_path = db_path
         os.makedirs(os.path.dirname(db_path) or ".", exist_ok=True)
         self._init_db()

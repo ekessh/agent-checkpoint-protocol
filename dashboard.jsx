@@ -34,7 +34,7 @@ const confColor = (c) => c>.9 ? C.green : c>.5 ? C.amber : C.red;
 const confBg = (c) => c>.9 ? C.greenBg : c>.5 ? C.amberBg : C.redBg;
 const statusIcon = (s,b,m) => s==="rolled_back"?"❌" : m?.merged_from || m?.merged ? "🔀" : b!=="main"?"🌿":"✅";
 
-export default function AgentGitDashboard() {
+export default function AgentStateProtocolDashboard() {
   const [selected, setSelected] = useState(null);
   const [tab, setTab] = useState("tree");
   const [simStep, setSimStep] = useState(-1);
@@ -108,7 +108,7 @@ export default function AgentGitDashboard() {
       <div style={{display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:28}}>
         <div>
           <h1 style={{fontSize:26, fontWeight:700, margin:0, letterSpacing:"-0.03em", display:"flex", alignItems:"center", gap:10}}>
-            <span style={{fontSize:28}}>🧠</span> AgentGit
+            <span style={{fontSize:28}}>🧠</span> AgentStateProtocol
           </h1>
           <p style={{color:C.dim, fontSize:13, margin:"4px 0 0"}}>Checkpointing & Recovery Protocol for AI Agents — Git for Thoughts</p>
         </div>
@@ -239,9 +239,9 @@ export default function AgentGitDashboard() {
                 background:C.bg, border:`1px solid ${C.border}`, borderRadius:8, padding:16,
                 fontSize:12.5, lineHeight:1.6, overflow:"auto", color:C.muted,
                 fontFamily:"'JetBrains Mono','Fira Code',monospace",
-              }}>{`from agentgit import AgentGit
+              }}>{`from agentstateprotocol import AgentStateProtocol
 
-agent = AgentGit("my-agent")
+agent = AgentStateProtocol("my-agent")
 
 # Save agent state (like git commit)
 agent.checkpoint(
@@ -271,7 +271,7 @@ agent.merge("creative-path")
 
 # View the full reasoning tree
 print(agent.visualize_tree())`}</pre>
-              <p style={{fontSize:12, color:C.dim, marginTop:12}}>Install: <code style={{background:C.bg, padding:"2px 8px", borderRadius:4, color:C.green}}>pip install agentgit</code></p>
+              <p style={{fontSize:12, color:C.dim, marginTop:12}}>Install: <code style={{background:C.bg, padding:"2px 8px", borderRadius:4, color:C.green}}>pip install agentstateprotocol</code></p>
             </div>
           )}
         </div>
@@ -349,9 +349,10 @@ print(agent.visualize_tree())`}</pre>
 
       {/* Footer */}
       <div style={{textAlign:"center", marginTop:24, padding:"16px 0", borderTop:`1px solid ${C.border}`}}>
-        <span style={{color:C.dim, fontSize:12}}>AgentGit v0.1.0 — Open Source · MIT License · </span>
-        <span style={{color:C.blue, fontSize:12}}>pip install agentgit</span>
+        <span style={{color:C.dim, fontSize:12}}>AgentStateProtocol v0.1.0 — Open Source · MIT License · </span>
+        <span style={{color:C.blue, fontSize:12}}>pip install agentstateprotocol</span>
       </div>
     </div>
   );
 }
+

@@ -1,5 +1,5 @@
 """
-Recovery Strategies for AgentGit
+Recovery Strategies for agentstateprotocol
 =================================
 
 When an agent hits an error, these strategies determine HOW to recover.
@@ -17,7 +17,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
-logger = logging.getLogger("agentgit.strategies")
+logger = logging.getLogger("agentstateprotocol.strategies")
 
 
 class RecoveryStrategy(ABC):

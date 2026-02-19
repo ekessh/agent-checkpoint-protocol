@@ -1,16 +1,16 @@
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "agentgit"
+name = "agentstateprotocol"
 version = "0.1.0"
-description = "Git for AI Thoughts — Checkpointing & Recovery Protocol for AI Agents"
+description = "Checkpointing and recovery protocol for AI agents"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
 authors = [
-    {name = "AgentGit Contributors"},
+    {name = "AgentStateProtocol Contributors"},
 ]
 keywords = [
     "ai", "agents", "checkpointing", "recovery", "state-management",
@@ -36,17 +36,17 @@ dev = [
 ]
 
 [project.scripts]
-agentgit = "agentgit.cli:main"
+agentstateprotocol = "agentstateprotocol.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/agentgit/agentgit"
-Documentation = "https://agentgit.readthedocs.io"
-Repository = "https://github.com/agentgit/agentgit"
-Issues = "https://github.com/agentgit/agentgit/issues"
+Homepage = "https://github.com/ekessh/agentstateprotocol"
+Documentation = "https://agentstateprotocol.readthedocs.io"
+Repository = "https://github.com/ekessh/agentstateprotocol"
+Issues = "https://github.com/ekessh/agentstateprotocol/issues"
 
 [tool.setuptools.packages.find]
-include = ["agentgit*"]
+include = ["agentstateprotocol*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["."]
 python_files = "test_*.py"
